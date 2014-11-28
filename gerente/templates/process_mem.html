@@ -1,0 +1,16 @@
+<html>
+<head>
+<title>{{ title }}</title>
+</head>
+<body>
+<table>
+{% for entry in data %}
+<tr>
+<td> {{ entry[0] }} </td>
+<td> {{ entry[1] }} </td>
+</tr>
+{% endfor %}
+<img src="data:image/png;base64,{{ graph }}" />
+</table>
+</body>
+</html>

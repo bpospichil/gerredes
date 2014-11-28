@@ -6,10 +6,13 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
+#include <time.h>
 #include "vmProcessTable.h"
 
 processTable data[20];
 netsnmp_table_data_set *table_set;
+time_t start;
+
 
 /** Initialize the vmProcessTable table by defining its contents and how it's structured */
 void
@@ -81,6 +84,7 @@ initialize_table_vmProcessTable(void)
                                                         OID_LENGTH(vmProcessTable_oid),
                                                         HANDLER_CAN_RWRITE),
                             table_set, NULL);
+    start = time(NULL);
 }
 
 /** Initializes the vmProcessTable module */
@@ -104,6 +108,10 @@ vmProcessTable_handler(
        this gives you chance to act on the request in some other way
        if need be. */
 
+    if (time(NULL) - start < 10)
+        return  SNMP_ERR_NOERROR;
+
+    start = time(NULL);
     netsnmp_table_row* row = netsnmp_table_data_set_get_first_row(table_set);
     int i = 0;
     while (row)

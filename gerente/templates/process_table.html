@@ -10,7 +10,7 @@
 <td> {{ entry.pid }} </td>
 <td> {{ entry.owner }} </td>
 <td> {{ entry.cpu }} </td>
-<td> {{ entry.mem }} </td>
+<td><a href="{{ url_for('process_table_detail', id=entry.index) }}"> {{ entry.mem }} </a></td>
 <td> {{ entry.state }} </td>
 </tr>
 {% endfor %}
