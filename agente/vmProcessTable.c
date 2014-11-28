@@ -9,20 +9,19 @@
 #include "vmProcessTable.h"
 
 processTable data[20];
-
+netsnmp_table_data_set *table_set;
 
 /** Initialize the vmProcessTable table by defining its contents and how it's structured */
 void
 initialize_table_vmProcessTable(void)
 {
     const oid vmProcessTable_oid[] = {1,3,6,1,4,1,12619,1,3};
-    netsnmp_table_data_set *table_set;
 
     /* create the table structure itself */
     table_set = netsnmp_create_table_data_set("vmProcessTable");
 
     /* comment this out or delete if you don't support creation of new rows */
-    table_set->allow_creation = 1;
+    table_set->allow_creation = 0;
 
     /***************************************************
      * Adding indexes
@@ -61,7 +60,6 @@ initialize_table_vmProcessTable(void)
                 if (rand()%2 == 1)
                         strcat(data[i].state, "Z");
                 strcat(data[i].owner, "bruno");
-
 
                 netsnmp_table_row* row = netsnmp_create_table_data_row();
 		
@@ -105,5 +103,18 @@ vmProcessTable_handler(
        already been processed by the master table_dataset handler, but
        this gives you chance to act on the request in some other way
        if need be. */
+
+    netsnmp_table_row* row = netsnmp_table_data_set_get_first_row(table_set);
+    int i = 0;
+    while (row)
+    {
+        data[i].cpu = rand()%100;
+        data[i].mem += rand()%100;
+        netsnmp_set_row_column(row, COLUMN_VMPROCESSCPU, ASN_INTEGER, &data[i].cpu, sizeof(data[i].cpu));
+        netsnmp_set_row_column(row, COLUMN_VMPROCESSMEM, ASN_INTEGER, &data[i].mem, sizeof(data[i].mem));
+        row = netsnmp_table_data_set_get_next_row(table_set,row);
+        ++i;
+    }
+
     return SNMP_ERR_NOERROR;
 }

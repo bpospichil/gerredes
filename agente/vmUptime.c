@@ -6,10 +6,12 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
+#include <time.h>
 #include "vmUptime.h"
 
 
 static long uptime = 0;
+static time_t tstart;
 
 /** Initializes the vmUptime module */
 void
@@ -24,6 +26,9 @@ init_vmUptime(void)
                                vmUptime_oid, OID_LENGTH(vmUptime_oid),
                                HANDLER_CAN_RONLY
         ));
+
+    tstart = time(NULL);
+    
 }
 
 int
@@ -31,6 +36,7 @@ handle_vmUptime(netsnmp_mib_handler *handler,
                           netsnmp_handler_registration *reginfo,
                           netsnmp_agent_request_info   *reqinfo,
                           netsnmp_request_info         *requests)
+
 {
     /* We are never called for a GETNEXT if it's registered as a
        "instance", as it's "magically" handled for us.  */
@@ -41,11 +47,11 @@ handle_vmUptime(netsnmp_mib_handler *handler,
     switch(reqinfo->mode) {
 
         case MODE_GET:
+	    uptime = time(NULL) - tstart;
             snmp_set_var_typed_value(requests->requestvb,
 				     ASN_TIMETICKS,
                                      &uptime,
                                      sizeof(uptime));
-	    uptime++;
             break;
 
 
