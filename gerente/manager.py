@@ -1,15 +1,15 @@
-from flask import Flask
-from snimpy.manager import Manager, load
+from flask import Flask, render_template
+from database import ProcessTable, ProcessTableEntry
+from mongoengine import connect
+
 
 app = Flask(__name__)
-load("SNMPv2-MIB")
-host = "104.131.91.218"
-community = "vlavaav"
-m = Manager(host, community);
 
-@app.route("/")
-def hello():
-    return m.sysDescr
+@app.route("/vmProcessTable/")
+def process_table():
+    p = ProcessTable.objects.order_by('-id').first()
+    return render_template("process_table.html", title='vmProcessTable', entries=p.entries)
 
 if __name__ == "__main__":
-    app.run('0.0.0.0')
+    connect("gerente")
+    app.run('0.0.0.0', debug=True)

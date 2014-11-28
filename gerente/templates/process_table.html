@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>{{ title }}</title>
+</head>
+<body>
+<table>
+{% for entry in entries %}
+<tr>
+<td> {{ entry.index }} </td>
+<td> {{ entry.pid }} </td>
+<td> {{ entry.owner }} </td>
+<td> {{ entry.cpu }} </td>
+<td> {{ entry.mem }} </td>
+<td> {{ entry.state }} </td>
+</tr>
+{% endfor %}
+</table>
+</body>
+</html>
