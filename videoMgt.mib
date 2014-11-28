@@ -1,3 +1,13 @@
+VIDEO-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+        enterprises
+                FROM RFC1155-SMI;
+
+myCompany            OBJECT IDENTIFIER ::= { enterprises 12619 }
+END
+
+
 
 NEW-MIB DEFINITIONS ::= BEGIN
 
@@ -64,7 +74,7 @@ vmProcessIndex  OBJECT-TYPE
 	ACCESS     read-only
 	STATUS     mandatory
 	DESCRIPTION 
-		"Indice do processo"
+		"Indice do processo na tabela"
 	::= { vmProcessEntry 1 }
 
 vmProcessPID  OBJECT-TYPE
