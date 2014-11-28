@@ -13,7 +13,7 @@ class ProcessTable(Document):
     entries = ListField(EmbeddedDocumentField(ProcessTableEntry))
     timestamp = DateTimeField(default = datetime.datetime.now)
    
-class UpTimeScalar(Document):
-    value = DateTimeField()
-    timestamp = DateTimeField()
+class UptimeScalar(Document):
+    value = IntField()
+    timestamp = DateTimeField(default = datetime.datetime.now)
 

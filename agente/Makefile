@@ -11,4 +11,4 @@ all: $(OBJECTS)
 	$(CC) $(CFLAGS) -o ../$@ $< $(LDLIBS)
 
 clean:
-	rm *.so
+	rm ../*.so

@@ -1,7 +1,7 @@
 from mongoengine import *
 import datetime
 from snimpy.manager import Manager, load
-from database import ProcessTableEntry, ProcessTable
+from database import ProcessTableEntry, ProcessTable, UptimeScalar
 import time
 
 load("/home/bruno/.snmp/mibs/videoMgt.mib")
@@ -44,10 +44,18 @@ def get_process_table():
     p = ProcessTable(entries=entries)
     p.save();
 
+def get_uptime_scalar():
+    uptime = int(m.vmUptime)
+    print uptime
+    obj = UptimeScalar(value=uptime)
+    obj.save()
+    
+
 
 if __name__ == '__main__':
     connect('gerente')
-    get_process_table()
+    get_uptime_scalar()
+#    get_process_table()
     #while(true):
     #    getProcessTable()
     #    time.sleep(60)
