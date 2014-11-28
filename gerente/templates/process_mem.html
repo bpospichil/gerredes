@@ -1,16 +1,33 @@
 <html>
 <head>
 <title>{{ title }}</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-<table>
+<div class="container-fluid">
+
+<div class="box" align="center">
+	<img src="data:image/png;base64,{{ graph }}" />
+</div>
+<table class="table table-striped table-bordered table-responsive">
+<thead style="font-weight: bold;">
+<td>Data/Hora</td>
+<td>Uso de mem&oacute;ria</td>
+</thead>
 {% for entry in data %}
 <tr>
 <td> {{ entry[0] }} </td>
 <td> {{ entry[1] }} </td>
 </tr>
 {% endfor %}
-<img src="data:image/png;base64,{{ graph }}" />
 </table>
+</div>
 </body>
 </html>

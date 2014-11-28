@@ -1,9 +1,33 @@
 <html>
 <head>
 <title>{{ title }}</title>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-<table>
+
+<div class="container-fluid">
+
+<div class="padding">
+<p>&Uacute;ltima atualiza&ccedil;&atilde;o: </p><p style="font-weight: bold;">{{ date }}</p>
+</div>
+
+<table class="table table-striped table-bordered table-responsive">
+<thead style="font-weight: bold;">
+<td>&Iacute;ndice</td>
+<td>PID</td>
+<td>Owner</td>
+<td>CPU</td>
+<td>Mem&oacute;ria</td>
+<td>Status</td>
+</thead>
+
 {% for entry in entries %}
 <tr>
 <td> {{ entry.index }} </td>
@@ -15,5 +39,7 @@
 </tr>
 {% endfor %}
 </table>
+
+</div>
 </body>
 </html>
