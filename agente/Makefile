@@ -8,7 +8,7 @@ OBJECTS=vmProcessTable.so vmUptime.so
 all: $(OBJECTS)
 
 %.so: %.c
-	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
+	$(CC) $(CFLAGS) -o ../$@ $< $(LDLIBS)
 
 clean:
 	rm *.so
