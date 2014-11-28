@@ -41,10 +41,12 @@ vmProcessEntry  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		""
-	INDEX { vmProcessPID }
+	INDEX { vmProcessIndex }
 	::= { vmProcessTable 1 }
 
 VmProcessEntry ::= SEQUENCE {
+	vmProcessIndex
+		INTEGER,
 	vmProcessPID
 		INTEGER,
 	vmProcessOwner
@@ -57,13 +59,21 @@ VmProcessEntry ::= SEQUENCE {
 		OCTET STRING
 }
 
+vmProcessIndex  OBJECT-TYPE
+	SYNTAX     INTEGER
+	ACCESS     read-only
+	STATUS     mandatory
+	DESCRIPTION 
+		"Indice do processo"
+	::= { vmProcessEntry 1 }
+
 vmProcessPID  OBJECT-TYPE
 	SYNTAX     INTEGER
 	ACCESS     read-only
 	STATUS     mandatory
 	DESCRIPTION 
 		"PID do processo"
-	::= { vmProcessEntry 1 }
+	::= { vmProcessEntry 2 }
 
 vmProcessOwner  OBJECT-TYPE
 	SYNTAX     OCTET STRING
@@ -71,7 +81,7 @@ vmProcessOwner  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Owner do processo"
-	::= { vmProcessEntry 2 }
+	::= { vmProcessEntry 3 }
 
 vmProcessCPU  OBJECT-TYPE
 	SYNTAX     INTEGER (0..100)
@@ -79,7 +89,7 @@ vmProcessCPU  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"%CPU usado pelo processo"
-	::= { vmProcessEntry 3 }
+	::= { vmProcessEntry 4 }
 
 vmProcessMem  OBJECT-TYPE
 	SYNTAX     INTEGER (0..100)
@@ -87,7 +97,7 @@ vmProcessMem  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"%Memória usado pelo sistema"
-	::= { vmProcessEntry 4 }
+	::= { vmProcessEntry 5 }
 
 vmProcessState  OBJECT-TYPE
 	SYNTAX     OCTET STRING
@@ -95,7 +105,7 @@ vmProcessState  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Estado do processo na nomenclatura Unix."
-	::= { vmProcessEntry 5 }
+	::= { vmProcessEntry 6 }
 
 vmChannelTable  OBJECT-TYPE
 	SYNTAX SEQUENCE OF VmChannelEntry

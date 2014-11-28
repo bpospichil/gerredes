@@ -10,10 +10,20 @@ void init_vmProcessTable(void);
 void initialize_table_vmProcessTable(void);
 Netsnmp_Node_Handler vmProcessTable_handler;
 
+typedef struct {
+        int pid;
+        char owner[50];
+        int cpu;
+        int mem;
+        char state[5];
+} processTable;
+
+
 /* column number definitions for table vmProcessTable */
-       #define COLUMN_VMPROCESSPID		1
-       #define COLUMN_VMPROCESSOWNER		2
-       #define COLUMN_VMPROCESSCPU		3
-       #define COLUMN_VMPROCESSMEM		4
-       #define COLUMN_VMPROCESSSTATE		5
+       #define COLUMN_VMPROCESSINDEX		1
+       #define COLUMN_VMPROCESSPID		2
+       #define COLUMN_VMPROCESSOWNER		3
+       #define COLUMN_VMPROCESSCPU		4
+       #define COLUMN_VMPROCESSMEM		5
+       #define COLUMN_VMPROCESSSTATE		6
 #endif /* VMPROCESSTABLE_H */

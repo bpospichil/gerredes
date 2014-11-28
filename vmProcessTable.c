@@ -8,6 +8,9 @@
 #include <net-snmp/agent/net-snmp-agent-includes.h>
 #include "vmProcessTable.h"
 
+processTable data[20];
+
+
 /** Initialize the vmProcessTable table by defining its contents and how it's structured */
 void
 initialize_table_vmProcessTable(void)
@@ -19,7 +22,7 @@ initialize_table_vmProcessTable(void)
     table_set = netsnmp_create_table_data_set("vmProcessTable");
 
     /* comment this out or delete if you don't support creation of new rows */
-    table_set->allow_creation = 0;
+    table_set->allow_creation = 1;
 
     /***************************************************
      * Adding indexes
@@ -27,12 +30,14 @@ initialize_table_vmProcessTable(void)
     DEBUGMSGTL(("initialize_table_vmProcessTable",
                 "adding indexes to table vmProcessTable\n"));
     netsnmp_table_set_add_indexes(table_set,
-                           ASN_INTEGER,  /* index: vmProcessPID */
+                           ASN_INTEGER,  /* index: vmProcessIndex */
                            0);
 
     DEBUGMSGTL(("initialize_table_vmProcessTable",
                 "adding column types to table vmProcessTable\n"));		 
     netsnmp_table_set_multi_add_default_row(table_set,
+                                            COLUMN_VMPROCESSINDEX, ASN_INTEGER, 0,
+                                            NULL, 0,
                                             COLUMN_VMPROCESSPID, ASN_INTEGER, 0,
                                             NULL, 0,
                                             COLUMN_VMPROCESSOWNER, ASN_OCTET_STR, 0,
@@ -44,20 +49,32 @@ initialize_table_vmProcessTable(void)
                                             COLUMN_VMPROCESSSTATE, ASN_OCTET_STR, 0,
                                             NULL, 0,
                               0);
-	u_long idx = 123;
-	netsnmp_table_row* row = netsnmp_create_table_data_row();
-	netsnmp_table_row_add_index(row, ASN_INTEGER, &idx, sizeof(idx));
+    
 
-	netsnmp_set_row_column(row, COLUMN_VMPROCESSOWNER, ASN_OCTET_STR, "Bruno", sizeof("Bruno"));
-	
-	idx = 10;
-	netsnmp_set_row_column(row, COLUMN_VMPROCESSCPU, ASN_INTEGER, &idx, sizeof(idx));
-	idx = 200;
-	netsnmp_set_row_column(row, COLUMN_VMPROCESSMEM, ASN_INTEGER, &idx, sizeof(idx));
-	netsnmp_set_row_column(row, COLUMN_VMPROCESSSTATE, ASN_OCTET_STR, "R" , sizeof("R"));
+        int i;
+        for (i = 0; i < 20; ++i)
+        {
+                data[i].pid = rand()%1000;
+                data[i].cpu = rand()%100;
+                data[i].mem = rand()%1000;
+                strcat(data[i].state, "R");
+                if (rand()%2 == 1)
+                        strcat(data[i].state, "Z");
+                strcat(data[i].owner, "bruno");
 
-	netsnmp_table_dataset_add_row(table_set, row);
- 
+
+                netsnmp_table_row* row = netsnmp_create_table_data_row();
+		
+                netsnmp_table_row_add_index(row, ASN_INTEGER, &i, sizeof(i));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSINDEX, ASN_INTEGER, &i, sizeof(i));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSPID, ASN_INTEGER, &data[i].pid, sizeof(data[i].pid));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSOWNER, ASN_OCTET_STR, data[i].owner, sizeof(data[i].owner));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSCPU, ASN_INTEGER, &data[i].cpu, sizeof(data[i].cpu));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSMEM, ASN_INTEGER, &data[i].mem, sizeof(data[i].mem));
+                netsnmp_set_row_column(row, COLUMN_VMPROCESSSTATE, ASN_OCTET_STR, data[i].state , sizeof(data[i].state));
+                netsnmp_table_dataset_add_row(table_set, row);
+        }
+
     /* registering the table with the master agent */
     /* note: if you don't need a subhandler to deal with any aspects
        of the request, change vmProcessTable_handler to "NULL" */

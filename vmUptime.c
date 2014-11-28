@@ -41,7 +41,8 @@ handle_vmUptime(netsnmp_mib_handler *handler,
     switch(reqinfo->mode) {
 
         case MODE_GET:
-            snmp_set_var_typed_value(requests->requestvb, ASN_TIMETICKS,
+            snmp_set_var_typed_value(requests->requestvb,
+				     ASN_TIMETICKS,
                                      &uptime,
                                      sizeof(uptime));
 	    uptime++;

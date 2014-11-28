@@ -2,11 +2,12 @@ CC=gcc
 CFLAGS=`net-snmp-config --cflags` -fPIC -shared -g
 LDLIBS=`net-snmp-config --libs`
 
-OBJECTS= vmProcessTable.so vmUptime.so
+OBJECTS=vmProcessTable.so vmUptime.so
 
-#all: $(OBJECTS)
 
-$(OBJECTS): %.so: %.c
+all: $(OBJECTS)
+
+%.so: %.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDLIBS)
 
 clean:
