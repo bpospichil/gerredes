@@ -14,12 +14,14 @@
 <div class="container-fluid">
 
 <div class="box" align="center">
+	<p class='h2'>{{ title }}</p>
 	<img src="data:image/png;base64,{{ graph }}" />
 </div>
+<div style="padding-bottom: 20px;"></div>
 <table class="table table-striped table-bordered table-responsive">
 <thead style="font-weight: bold;">
 <td>Data/Hora</td>
-<td>Uso de mem&oacute;ria</td>
+<td>Uso de {{ ref_table }} </td>
 </thead>
 {% for entry in data %}
 <tr>
