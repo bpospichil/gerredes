@@ -73,8 +73,8 @@ snmpset -v2c -c <COMMUNITY> <HOST> UCD-DLMOD-MIB::dlmodName.<N> s <MIBNAME> UCD-
 snmpset -v2c -c <COMMUNITY> <HOST> UCD-DLMOD-MIB::dlmodStatus.<N> i load
 ```
 Aonde:
-* <COMMUNITY> é a comunidade;
-* <HOST> é o endereço do servidor;
-* <N> é um numero inteiro indice da tabela. Não pode ser repetido;
-* <MIBNAME> é o nome da entrada na MIB (e.g. sysUptime);
-* <MIBPATH> é o caminho até a so (shared object) que responde por essa mib;
+* COMMUNITY é a comunidade;
+* HOST é o endereço do servidor;
+* N é um numero inteiro indice da tabela. Não pode ser repetido;
+* MIBNAME é o nome da entrada na MIB (e.g. sysUptime);
+* MIBPATH é o caminho até a so (shared object) que responde por essa mib;
