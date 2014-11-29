@@ -4,6 +4,7 @@ gerredes
 Estrutura da MIB
 --------
 ```
+snmptranslate -Tp -IR videoMgr
 +--videoMgr(1)
    |
    +-- -R-- TimeTicks vmUptime(1)
@@ -27,21 +28,24 @@ Estrutura da MIB
    +--vmChannelTable(4)
    |  |
    |  +--vmChannelEntry(1)
-   |     |  Index: vmChannelId
+   |     |  Index: vmChannelIndex
    |     |
-   |     +-- -R-- INTEGER   vmChannelId(1)
-   |     +-- -R-- INTEGER   vmChannelAudience(2)
+   |     +-- -R-- INTEGER   vmChannelIndex(1)
+   |     +-- -R-- INTEGER   vmChannelId(2)
+   |     +-- -R-- INTEGER   vmChannelAudience(3)
    |
    +--vmVideoTable(5)
       |
       +--vmVideoEntry(1)
-         |  Index: vmVideoId
+         |  Index: vmVideoIndex
          |
-         +-- -R-- INTEGER   vmVideoId(1)
-         +-- -R-- INTEGER   vmVideoAudience(2)
-         +-- -RW- INTEGER   vmVideoAdvertisingMetrics(3)
-         +-- -R-- INTEGER   vmVideoKindVOD(4)
+         +-- -R-- INTEGER   vmVideoIndex(1)
+         +-- -R-- INTEGER   vmVideoId(2)
+         +-- -R-- INTEGER   vmVideoAudience(3)
+         +-- -RW- INTEGER   vmVideoAdvertisingMetrics(4)
+         +-- -R-- INTEGER   vmVideoKindVOD(5)
          |        Range: 0..1
-         +-- -R-- INTEGER   vmVideoKindLive(5)
+         +-- -R-- INTEGER   vmVideoKindLive(6)
                   Range: 0..1
+
 ```
