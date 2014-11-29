@@ -227,35 +227,6 @@ vmVideoKindLive  OBJECT-TYPE
 		"Tipo de vídeo Live."
 	::= { vmVideoEntry 5 }
 
-vmBlockedCountriesTable  OBJECT-TYPE
-	SYNTAX SEQUENCE OF VmBlockedCountriesEntry
-	ACCESS     not-accessible
-	STATUS     mandatory
-	DESCRIPTION 
-		"Tabela de países proibidos de acessar o sistema."
-	::= { videoMgr 6 }
-
-vmBlockedCountriesEntry  OBJECT-TYPE
-	SYNTAX 	VmBlockedCountriesEntry
-	ACCESS     not-accessible
-	STATUS     mandatory
-	DESCRIPTION 
-		""
-	INDEX { vmBlockedCountrieName }
-	::= { vmBlockedCountriesTable 1 }
-
-VmBlockedCountriesEntry ::= SEQUENCE {
-	vmBlockedCountrieName
-		OCTET STRING
-}
-
-vmBlockedCountrieName  OBJECT-TYPE
-	SYNTAX     OCTET STRING (SIZE(2))
-	ACCESS     read-write
-	STATUS     mandatory
-	DESCRIPTION 
-		"Código do país. Ex. BR."
-	::= { vmBlockedCountriesEntry 1 }
 END
 
 -- This MIB was created using NuDesign Technologies' Visual MIBuilder (Ver 5.2).
