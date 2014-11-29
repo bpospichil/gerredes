@@ -131,15 +131,25 @@ vmChannelEntry  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		""
-	INDEX { vmChannelId }
+	INDEX { vmChannelIndex }
 	::= { vmChannelTable 1 }
 
 VmChannelEntry ::= SEQUENCE {
+	vmChannelIndex
+		INTEGER,
 	vmChannelId
 		INTEGER,
 	vmChannelAudience
 		INTEGER
 }
+
+vmChannelIndex  OBJECT-TYPE
+	SYNTAX     INTEGER
+	ACCESS     read-only
+	STATUS     mandatory
+	DESCRIPTION 
+		"Indice do Canal."
+	::= { vmChannelEntry 1 }
 
 vmChannelId  OBJECT-TYPE
 	SYNTAX     INTEGER
@@ -147,7 +157,7 @@ vmChannelId  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Id do Canal."
-	::= { vmChannelEntry 1 }
+	::= { vmChannelEntry 2 }
 
 vmChannelAudience  OBJECT-TYPE
 	SYNTAX     INTEGER
@@ -155,7 +165,7 @@ vmChannelAudience  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Audiência do canal."
-	::= { vmChannelEntry 2 }
+	::= { vmChannelEntry 3 }
 
 vmVideoTable  OBJECT-TYPE
 	SYNTAX SEQUENCE OF VmVideoEntry
@@ -171,10 +181,12 @@ vmVideoEntry  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		""
-	INDEX { vmVideoId }
+	INDEX { vmVideoIndex }
 	::= { vmVideoTable 1 }
 
 VmVideoEntry ::= SEQUENCE {
+	vmVideoIndex
+		INTEGER,
 	vmVideoId
 		INTEGER,
 	vmVideoAudience
@@ -187,13 +199,21 @@ VmVideoEntry ::= SEQUENCE {
 		INTEGER
 }
 
+vmVideoIndex  OBJECT-TYPE
+	SYNTAX     INTEGER
+	ACCESS     read-only
+	STATUS     mandatory
+	DESCRIPTION 
+		"Indice do video."
+	::= { vmVideoEntry 1 }
+
 vmVideoId  OBJECT-TYPE
 	SYNTAX     INTEGER
 	ACCESS     read-only
 	STATUS     mandatory
 	DESCRIPTION 
 		"Id do vídeo."
-	::= { vmVideoEntry 1 }
+	::= { vmVideoEntry 2 }
 
 vmVideoAudience  OBJECT-TYPE
 	SYNTAX     INTEGER
@@ -201,7 +221,7 @@ vmVideoAudience  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Numero de visitações do video."
-	::= { vmVideoEntry 2 }
+	::= { vmVideoEntry 3 }
 
 vmVideoAdvertisingMetrics  OBJECT-TYPE
 	SYNTAX     INTEGER
@@ -209,7 +229,7 @@ vmVideoAdvertisingMetrics  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Prioridade de propaganda no vídeo."
-	::= { vmVideoEntry 3 }
+	::= { vmVideoEntry 4 }
 
 vmVideoKindVOD  OBJECT-TYPE
 	SYNTAX     INTEGER (0..1)
@@ -217,7 +237,7 @@ vmVideoKindVOD  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Tipo de vídeo VOD."
-	::= { vmVideoEntry 4 }
+	::= { vmVideoEntry 5 }
 
 vmVideoKindLive  OBJECT-TYPE
 	SYNTAX     INTEGER (0..1)
@@ -225,7 +245,7 @@ vmVideoKindLive  OBJECT-TYPE
 	STATUS     mandatory
 	DESCRIPTION 
 		"Tipo de vídeo Live."
-	::= { vmVideoEntry 5 }
+	::= { vmVideoEntry 6 }
 
 END
 
