@@ -4,7 +4,7 @@ gerredes
 Estrutura da MIB
 --------
 ```
-snmptranslate -Tp -IR videoMgr
+$ snmptranslate -Tp -IR videoMgr
 +--videoMgr(1)
    |
    +-- -R-- TimeTicks vmUptime(1)
