@@ -49,3 +49,32 @@ $ snmptranslate -Tp -IR videoMgr
                   Range: 0..1
 
 ```
+
+Gerando os agentes
+--------
+Os agentes foram gerados utilizando o utilitário mib2c e compilados de acordo com make usando o arquivo agente/Makefile.
+Para dados escalares foi utilizado:
+```
+$ mib2c -c mib2c.scalar.conf <ID>
+
+```
+E para dados tabulares:
+```
+ mib2c -c mib2c.create-dataset.conf <ID>
+```
+Essas configurações são bastante simples, porém atendem as expectativas desse trabalho. Em casos mais reais, existem outras configurações possíveis, como pode ser visto em http://www.net-snmp.org/docs/man/mib2c.html
+
+Carregando os agentes
+--------
+Os agentes foram carregados por meio de sets efetuados na MIB UCD-DLMOD-MIB. Os comandos utilizados para uma mib qualquer são:
+```
+snmpset -v2c -c <COMMUNITY> <HOST> UCD-DLMOD-MIB::dlmodStatus.<N> i create
+snmpset -v2c -c <COMMUNITY> <HOST> UCD-DLMOD-MIB::dlmodName.<N> s <MIBNAME> UCD-DLMOD-MIB::dlmodPath.<N> s <MIBPATH>
+snmpset -v2c -c <COMMUNITY> <HOST> UCD-DLMOD-MIB::dlmodStatus.<N> i load
+```
+Aonde:
+* <COMMUNITY> é a comunidade;
+* <HOST> é o endereço do servidor;
+* <N> é um numero inteiro indice da tabela. Não pode ser repetido;
+* <MIBNAME> é o nome da entrada na MIB (e.g. sysUptime);
+* <MIBPATH> é o caminho até a so (shared object) que responde por essa mib;
