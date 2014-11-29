@@ -17,3 +17,6 @@ class UptimeScalar(Document):
     value = IntField()
     timestamp = DateTimeField(default = datetime.datetime.now)
 
+class ProcessCount(Document):
+    value = IntField()
+    timestamp = DateTimeField(default = datetime.datetime.now)

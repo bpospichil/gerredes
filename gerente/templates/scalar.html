@@ -14,11 +14,27 @@
 
 <div class="container-fluid">
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for _, message in messages %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
 <div class="padding">
 <p>&Uacute;ltima atualiza&ccedil;&atilde;o: <span style="font-weight: bold;">{{ date }} (EST)</span></p>
-<p>{{ kind }}: <span style="font-weight: bold;">{{ uptime }} </span></p>
-<p>Recorde: <span style="font-weight: bold;">{{ maxuptime }} </span></p>
+<p>{{ kind }}: <span style="font-weight: bold;">{{ value }} </span></p>
+<p>Recorde: <span style="font-weight: bold;">{{ maxvalue }} </span></p>
 </div>
+
+{% if has_set == True %}
+<div class="padding">
+<form method="POST">
+Novo valor: <input type="text" name="newvalue"></input>
+</form>
+{% endif %}
 
 </div>
 </body>

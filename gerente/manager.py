@@ -1,6 +1,8 @@
-from flask import Flask, render_template, abort
-from database import ProcessTable, ProcessTableEntry, UptimeScalar
+from flask import Flask, render_template, abort, request, flash, redirect, url_for, request, Response
+from database import ProcessTable, ProcessTableEntry, UptimeScalar, ProcessCount
 from mongoengine import connect
+from functools import wraps
+
 
 import matplotlib
 matplotlib.use('Agg')
@@ -11,6 +13,29 @@ from cStringIO import StringIO
 import time
 
 app = Flask(__name__)
+app.secret_key = 'vlavaav'
+
+def check_auth(username, password):
+    """This function is called to check if a username /
+    password combination is valid.
+    """
+    return username == 'admin' and password == 'secret'
+
+def authenticate():
+    """Sends a 401 response that enables basic auth"""
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
 
 def gen_graph(kind, xvals, yvals, xlabel, ylabel):
     fig = plt.figure()
@@ -35,6 +60,7 @@ def gen_graph(kind, xvals, yvals, xlabel, ylabel):
     return graph
 
 @app.route("/vmUptime/")
+@requires_auth
 def uptime():
     objs = UptimeScalar.objects.all()
     last = objs.order_by('-id').first()
@@ -45,12 +71,14 @@ def uptime():
     return render_template('scalar.html',
                            title='vmUptime',
                            date=last.timestamp.strftime("%x - %X"),
-                           uptime=time.strftime('%X', time.gmtime(int(last.value))),
-                           maxuptime=time.strftime('%X', time.gmtime(maxuptime)),
-                           kind='Uptime')
+                           value=time.strftime('%X', time.gmtime(int(last.value))),
+                           maxvalue=time.strftime('%X', time.gmtime(maxuptime)),
+                           kind='Uptime',
+                           has_set=False)
 
 
 @app.route("/vmProcessTable/")
+@requires_auth
 def process_table():
     p = ProcessTable.objects.order_by('-id').first()
     return render_template("process_table.html", 
@@ -59,6 +87,7 @@ def process_table():
                            date=p.timestamp.strftime("%x - %X"))
 
 @app.route("/vmProcessMem/<int:id>")
+@requires_auth
 def process_table_mem(id):
 
     if id <= 0 or id >=20:
@@ -81,6 +110,7 @@ def process_table_mem(id):
                            ref_table='Memoria (MB)')
 
 @app.route("/vmProcessCPU/<int:id>")
+@requires_auth
 def process_table_cpu(id):
 
     if id < 0 or id > 20:
@@ -101,6 +131,34 @@ def process_table_cpu(id):
                                            'Data/Hora (EST)',
                                            'Uso de CPU (%)'),
                            ref_table='CPU (%)')
+
+@app.route("/vmProcessCount/", methods=['GET', 'POST'])
+@requires_auth
+def process_count():
+    objs = ProcessCount.objects.all()
+    last = objs.order_by('-id').first()
+
+    if request.method == 'GET':    
+        maxvalue = 0
+        for obj in objs:
+            if obj.value > maxvalue:
+                maxvalue = obj.value
+        return render_template('scalar.html',
+                               title='vmProcessCount.0',
+                               date=last.timestamp.strftime("%x - %X"),
+                               value=last.value,
+                               maxvalue=maxvalue,
+                               kind='Numero de processos',
+                               has_set=True)
+    if request.method == 'POST':
+        value = int(request.form['newvalue'])
+        if value != last.value:
+            p = ProcessCount(value=value)
+            p.save()
+            flash('Registro atualizado com sucesso')
+            return redirect(url_for('process_count'))
+
+
 
 if __name__ == "__main__":
     connect("gerente")
