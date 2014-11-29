@@ -59,6 +59,12 @@ def gen_graph(kind, xvals, yvals, xlabel, ylabel):
     graph = io.getvalue().encode('base64')
     return graph
 
+@app.route("/")
+@requires_auth
+def root():
+    return redirect(url_for('uptime'))
+
+
 @app.route("/vmUptime/")
 @requires_auth
 def uptime():

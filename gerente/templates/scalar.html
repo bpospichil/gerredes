@@ -14,6 +14,19 @@
 
 <div class="container-fluid">
 
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li {% if 'vmUptime' in title %}class="active"{% endif %}><a href="{{ url_for("uptime") }}">vmUptime</a></li>
+        <li {% if 'vmProcessCount' in title %}class="active"{% endif %}><a href=" {{ url_for("process_count") }}">vmProcessCount</a></li>
+        <li {% if 'vmProcessTable' in title %}class="active"{% endif %}><a href=" {{ url_for("process_table") }} ">vmProcessTable</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for _, message in messages %}
