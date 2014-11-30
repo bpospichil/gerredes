@@ -57,7 +57,7 @@ $ snmptranslate -Tp -IR videoMgr
 
 Diagrama
 --------
-![Diagrama da solução](https://lh6.googleusercontent.com/Wbx8QQE_klNmsx0bcQjxa_EOisnFA3iTvOipsQWvRgQT5-yn_RG29hQVdU3oNtqQhG7U=w1896-h859)
+![Diagrama da solução](http://i.imgur.com/YytEGkl.png)
 
 Gerando os agentes
 --------
