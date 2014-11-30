@@ -78,3 +78,50 @@ Aonde:
 * N é um numero inteiro indice da tabela. Não pode ser repetido;
 * MIBNAME é o nome da entrada na MIB (e.g. sysUptime);
 * MIBPATH é o caminho até a so (shared object) que responde por essa mib;
+
+Carregando o gerente
+--------
+O gerente foi desenvolvido em Python e utiliza mongodb como espaço de troca.
+As bibliotecas instaladas no ambiente são:
+```
+Flask==0.10.1
+Flask-WTF==0.10.3
+Jinja2==2.7.3
+Logbook==0.8.0
+MarkupSafe==0.23
+Pygments==2.0.1
+Quandl==2.0
+Sphinx==1.2.3
+WTForms==2.0.1
+Werkzeug==0.9.6
+cffi==0.8.6
+flask-mongoengine==0.7.1
+ipython==2.3.1
+itsdangerous==0.24
+matplotlib==1.4.2
+mock==1.0.1
+mongoengine==0.8.7
+nose==1.3.4
+numpy==1.9.1
+numpydoc==0.5
+patsy==0.3.0
+pyasn1==0.1.7
+pycparser==2.10
+pycrypto==2.6.1
+pymongo==2.7.2
+pyparsing==2.0.3
+pysnmp==4.2.5
+python-dateutil==2.2
+pytz==2014.10
+requests==2.4.3
+six==1.8.0
+snimpy==0.8.3
+statsmodels==0.6.0
+sympy==0.7.6
+tornado==4.0.2
+zipline==0.7.0
+```
+
+Além disso o gerente foi dividido em dois executáveis:
+* manager.py: responsável por consultar o mongodb e gerar a interface
+* daemon.py: responsável por coletar informações usando snmp e gravar no mongodb.
