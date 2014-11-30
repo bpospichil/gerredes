@@ -3,8 +3,8 @@ Gerência de Redes
 
 Integrantes
 --------
-*Bruno Pospichil
-*Jorge Ximendes
+* Bruno Pospichil
+* Jorge Ximendes
 
 Estrutura da MIB
 --------
