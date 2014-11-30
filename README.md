@@ -1,6 +1,8 @@
 Gerência de Redes
 ========
 
+Integrantes
+--------
 *Bruno Pospichil
 *Jorge Ximendes
 
