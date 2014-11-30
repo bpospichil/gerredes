@@ -4,7 +4,7 @@ from snimpy.manager import Manager, load
 from database import ProcessTableEntry, ProcessTable, UptimeScalar, ProcessCount
 import time
 
-load("/home/bruno/.snmp/mibs/videoMgt.mib")
+load("/home/bruno/.snmp/mibs/videoMgr.mib")
 host = "104.131.91.218"
 community = "vlavaav"
 m = Manager(host, community);
@@ -46,25 +46,20 @@ def get_process_table():
 
 def get_uptime_scalar():
     uptime = int(m.vmUptime)
-    print uptime
     obj = UptimeScalar(value=uptime)
     obj.save()
 
 def update_process_count():
     count = int(m.vmProcessCount)
     last = ProcessCount.objects.order_by('-id').first()
-    if last.value != count:
+    if last and last.value != count:
         m.vmProcessCount = last.value
-    
-    p = ProcessCount(value=count)
-    p.save()
-        
-    
-
 
 if __name__ == '__main__':
     connect('gerente')
-#    get_process_table()
-#    get_uptime_scalar()
-    update_process_count()
+    while(True):
+        get_process_table()
+        get_uptime_scalar()
+        update_process_count()
+        time.sleep(60)
 
