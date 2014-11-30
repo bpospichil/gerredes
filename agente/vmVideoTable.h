@@ -10,10 +10,20 @@ void init_vmVideoTable(void);
 void initialize_table_vmVideoTable(void);
 Netsnmp_Node_Handler vmVideoTable_handler;
 
+
+typedef struct {
+	int id;
+	int audience;
+	int advertising;
+	int vod;
+	int live;
+}video_table;
+
 /* column number definitions for table vmVideoTable */
-       #define COLUMN_VMVIDEOID		1
-       #define COLUMN_VMVIDEOAUDIENCE		2
-       #define COLUMN_VMVIDEOADVERTISINGMETRICS		3
-       #define COLUMN_VMVIDEOKINDVOD		4
-       #define COLUMN_VMVIDEOKINDLIVE		5
+       #define COLUMN_VMVIDEOINDEX		1
+       #define COLUMN_VMVIDEOID		2
+       #define COLUMN_VMVIDEOAUDIENCE		3
+       #define COLUMN_VMVIDEOADVERTISINGMETRICS		4
+       #define COLUMN_VMVIDEOKINDVOD		5
+       #define COLUMN_VMVIDEOKINDLIVE		6
 #endif /* VMVIDEOTABLE_H */

@@ -61,5 +61,5 @@ if __name__ == '__main__':
         get_process_table()
         get_uptime_scalar()
         update_process_count()
-        time.sleep(60)
+        time.sleep(300)
 

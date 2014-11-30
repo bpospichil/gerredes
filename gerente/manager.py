@@ -38,6 +38,11 @@ def requires_auth(f):
     return decorated
 
 def gen_graph(kind, xvals, yvals, xlabel, ylabel):
+    if len(xvals) > 10:
+        xvals = xvals[:10]
+    if len(yvals) > 10:
+        yvals = yvals[:10]
+
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     ind = np.arange(len(yvals))

@@ -27,12 +27,14 @@ initialize_table_vmVideoTable(void)
     DEBUGMSGTL(("initialize_table_vmVideoTable",
                 "adding indexes to table vmVideoTable\n"));
     netsnmp_table_set_add_indexes(table_set,
-                           ASN_INTEGER,  /* index: vmVideoId */
+                           ASN_INTEGER,  /* index: vmVideoIndex */
                            0);
 
     DEBUGMSGTL(("initialize_table_vmVideoTable",
                 "adding column types to table vmVideoTable\n"));		 
     netsnmp_table_set_multi_add_default_row(table_set,
+                                            COLUMN_VMVIDEOINDEX, ASN_INTEGER, 0,
+                                            NULL, 0,
                                             COLUMN_VMVIDEOID, ASN_INTEGER, 0,
                                             NULL, 0,
                                             COLUMN_VMVIDEOAUDIENCE, ASN_INTEGER, 0,
