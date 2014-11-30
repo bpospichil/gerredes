@@ -1,5 +1,7 @@
 Gerência de Redes
 ========
+Bruno Pospichil
+Jorge Ximendes
 
 Estrutura da MIB
 --------
