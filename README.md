@@ -55,6 +55,10 @@ $ snmptranslate -Tp -IR videoMgr
 
 ```
 
+Diagrama
+--------
+![Diagrama da solução](http://i.imgur.com/YytEGkl.png)
+
 Gerando os agentes
 --------
 Os agentes foram gerados utilizando o utilitário mib2c e compilados de acordo com make usando o arquivo agente/Makefile.
