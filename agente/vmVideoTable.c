@@ -6,20 +6,24 @@
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
+#include <time.h>
 #include "vmVideoTable.h"
+
+netsnmp_table_data_set *table_set;
+video_table data[30];
+time_t start;
 
 /** Initialize the vmVideoTable table by defining its contents and how it's structured */
 void
 initialize_table_vmVideoTable(void)
 {
     const oid vmVideoTable_oid[] = {1,3,6,1,4,1,12619,1,5};
-    netsnmp_table_data_set *table_set;
 
     /* create the table structure itself */
     table_set = netsnmp_create_table_data_set("vmVideoTable");
 
     /* comment this out or delete if you don't support creation of new rows */
-    table_set->allow_creation = 1;
+    table_set->allow_creation = 0;
 
     /***************************************************
      * Adding indexes
@@ -46,6 +50,29 @@ initialize_table_vmVideoTable(void)
                                             COLUMN_VMVIDEOKINDLIVE, ASN_INTEGER, 0,
                                             NULL, 0,
                               0);
+
+    int i = 0;
+    for (i = 0; i < 30; ++i) {
+        data[i].id = rand()%1000;
+        data[i].audience = rand()%100;
+        data[i].advertising = rand()%100;
+        if (rand()%2 == 1) {
+            data[i].vod = 1;
+            data[i].live = 0;
+        } else {
+            data[i].vod = 0;
+            data[i].live = 1;
+        }
+        netsnmp_table_row* row = netsnmp_create_table_data_row();
+        netsnmp_table_row_add_index(row, ASN_INTEGER, &i, sizeof(i));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOINDEX, ASN_INTEGER, &i, sizeof(i));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOID, ASN_INTEGER, &data[i].id, sizeof(data[i].id));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOAUDIENCE, ASN_INTEGER, &data[i].audience, sizeof(data[i].audience));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOADVERTISINGMETRICS, ASN_INTEGER, &data[i].advertising, sizeof(data[i].advertising));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOKINDVOD, ASN_INTEGER, &data[i].vod, sizeof(data[i].vod));
+        netsnmp_set_row_column(row, COLUMN_VMVIDEOKINDLIVE, ASN_INTEGER, &data[i].live, sizeof(data[i].live));
+        netsnmp_table_dataset_add_row(table_set, row);
+    }
     
     /* registering the table with the master agent */
     /* note: if you don't need a subhandler to deal with any aspects
@@ -55,6 +82,7 @@ initialize_table_vmVideoTable(void)
                                                         OID_LENGTH(vmVideoTable_oid),
                                                         HANDLER_CAN_RWRITE),
                             table_set, NULL);
+    start = time(NULL);
 }
 
 /** Initializes the vmVideoTable module */
@@ -73,9 +101,20 @@ vmVideoTable_handler(
     netsnmp_handler_registration      *reginfo,
     netsnmp_agent_request_info        *reqinfo,
     netsnmp_request_info              *requests) {
-    /* perform anything here that you need to do.  The requests have
-       already been processed by the master table_dataset handler, but
-       this gives you chance to act on the request in some other way
-       if need be. */
+
+    if (time(NULL) - start < 10) {
+	return SNMP_ERR_NOERROR;
+    }
+    start = time(NULL);
+    netsnmp_table_row* row = netsnmp_table_data_set_get_first_row(table_set);
+    int i = 0;
+    while(row) {
+	data[i].audience += rand()%100;
+	netsnmp_set_row_column(row, COLUMN_VMVIDEOAUDIENCE, ASN_INTEGER, &data[i].audience, sizeof(data[i].audience));
+	row = netsnmp_table_data_set_get_next_row(table_set,row);
+	++i;
+    }
     return SNMP_ERR_NOERROR;
+
+
 }

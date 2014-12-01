@@ -9,6 +9,7 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
+<link rel="shortcut icon" href="http://unicom.usr.com/images/icon-snmp.gif" /><
 </head>
 <body>
 <div class="container-fluid">
@@ -21,6 +22,7 @@
         <li {% if 'vmUptime' in title %}class="active"{% endif %}><a href="{{ url_for("uptime") }}">vmUptime</a></li>
         <li {% if 'vmProcessCount' in title %}class="active"{% endif %}><a href=" {{ url_for("process_count") }}">vmProcessCount</a></li>
         <li {% if 'vmProcessTable' in title %}class="active"{% endif %}><a href=" {{ url_for("process_table") }} ">vmProcessTable</a></li>
+        <li {% if 'vmVideoTable' in title %}class="active"{% endif %}><a href=" {{ url_for("video_table") }} ">vmVideoTable</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

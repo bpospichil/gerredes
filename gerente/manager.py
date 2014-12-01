@@ -1,5 +1,5 @@
 from flask import Flask, render_template, abort, request, flash, redirect, url_for, request, Response
-from database import ProcessTable, ProcessTableEntry, UptimeScalar, ProcessCount
+from database import ProcessTable, ProcessTableEntry, UptimeScalar, ProcessCount, VideoTable, VideoTableEntry
 from mongoengine import connect
 from functools import wraps
 
@@ -150,15 +150,11 @@ def process_count():
     last = objs.order_by('-id').first()
 
     if request.method == 'GET':    
-        maxvalue = 0
-        for obj in objs:
-            if obj.value > maxvalue:
-                maxvalue = obj.value
         return render_template('scalar.html',
                                title='vmProcessCount.0',
                                date=last.timestamp.strftime("%x - %X"),
                                value=last.value,
-                               maxvalue=maxvalue,
+                               maxvalue=0,
                                kind='Numero de processos',
                                has_set=True)
     if request.method == 'POST':
@@ -170,6 +166,32 @@ def process_count():
             return redirect(url_for('process_count'))
 
 
+@app.route("/vmVideoTable/")
+@requires_auth
+def video_table():
+    p = VideoTable.objects.order_by('-id').first()
+    return render_template("video_table.html", 
+		           title='vmVideoTable',
+                           entries=p.entries, 
+                           date=p.timestamp.strftime("%x - %X"))
+
+@app.route("/vmVideoAdvertisingMetrics/<int:idx>")
+@requires_auth
+def video_advertising(idx):
+    objs = VideoTable.objects.all()
+    last = objs.order_by('-id').first()
+    advertising = 0
+    for entry in last.entries:
+        if entry.index == idx:
+             advertising = entry.advertising
+    if request.method == 'GET':    
+        return render_template('scalar.html',
+                               title='vmVideoAdvertisingMetrics.{}'.format(idx),
+                               date=last.timestamp.strftime("%x - %X"),
+                               value=advertising,
+                               maxvalue=0,
+                               kind='Frequencia de propaganda',
+                               has_set=True)
 
 if __name__ == "__main__":
     connect("gerente")

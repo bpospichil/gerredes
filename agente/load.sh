@@ -16,6 +16,10 @@ snmpset $ID UCD-DLMOD-MIB::dlmodStatus.3 i create
 snmpset $ID UCD-DLMOD-MIB::dlmodName.3 s "vmProcessCount" UCD-DLMOD-MIB::dlmodPath.3 s "/home/bruno/gerredes/vmProcessCount.so"
 snmpset $ID UCD-DLMOD-MIB::dlmodStatus.3 i load
 
+snmpset $ID UCD-DLMOD-MIB::dlmodStatus.4 i create
+snmpset $ID UCD-DLMOD-MIB::dlmodName.4 s "vmVideoTable" UCD-DLMOD-MIB::dlmodPath.4 s "/home/bruno/gerredes/vmVideoTable.so"
+snmpset $ID UCD-DLMOD-MIB::dlmodStatus.4 i load
+
 #snmpset $ID UCD-DLMOD-MIB::dlmodStatus.3 i create
 #snmpset $ID UCD-DLMOD-MIB::dlmodName.3 s "vmVideoTable" UCD-DLMOD-MIB::dlmodPath.3 s "/home/bruno/gerredes/vmVideoTable.so"
 #snmpset $ID UCD-DLMOD-MIB::dlmodStatus.3 i load
