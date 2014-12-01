@@ -118,7 +118,7 @@ def process_table_mem(id):
                                            mem_list,
                                            'Data/Hora (EST)',
                                            'Uso de memoria (MB)'),
-                           ref_table='Memoria (MB)')
+                           ref_table='Uso de memoria (MB)')
 
 @app.route("/vmProcessCPU/<int:id>")
 @requires_auth
@@ -141,7 +141,7 @@ def process_table_cpu(id):
                                            cpu_list,
                                            'Data/Hora (EST)',
                                            'Uso de CPU (%)'),
-                           ref_table='CPU (%)')
+                           ref_table='Uso de CPU (%)')
 
 @app.route("/vmProcessCount/", methods=['GET', 'POST'])
 @requires_auth
@@ -178,6 +178,10 @@ def video_table():
 @app.route("/vmVideoAdvertisingMetrics/<int:idx>")
 @requires_auth
 def video_advertising(idx):
+
+    if id <= 0 or id >=30:
+        return abort(404);
+
     objs = VideoTable.objects.all()
     last = objs.order_by('-id').first()
     advertising = 0
@@ -192,6 +196,58 @@ def video_advertising(idx):
                                maxvalue=0,
                                kind='Frequencia de propaganda',
                                has_set=True)
+
+@app.route("/vmVideoAudience/<int:idx>")
+@requires_auth
+def video_audience(idx):
+
+    if idx <= 0 or idx >=30:
+        return abort(404);
+
+    aud_list = []
+    timestamp_list = []
+    for v in VideoTable.objects.order_by('-id'):
+        aud_list.append(v.entries[idx-1].audience)
+        timestamp_list.append(v.timestamp.strftime("%x - %X"))
+   
+    return render_template("process_table_detail.html",
+                           title='vmVideoAudience.{0}'.format(idx),
+                           data=zip(timestamp_list, aud_list),
+                           graph=gen_graph('line',
+                                           timestamp_list,
+                                           aud_list,
+                                           'Data/Hora (EST)',
+                                           'Audicencia do video'),
+                           ref_table='Audiencia total (views)')
+
+@app.route("/vmVideoAudienceDiff/<int:idx>")
+@requires_auth
+def video_audience_diff(idx):
+
+    if idx <= 0 or idx >=30:
+        return abort(404);
+
+    diffaud_list = []
+    timestamp_list = []
+    vt = VideoTable.objects.order_by('-id')
+
+    for i in range(0, vt.count()):
+        if i != vt.count()-1:
+            diffaud_list.append(vt[i].entries[idx-1].audience - vt[i+1].entries[idx-1].audience)
+        else:
+            diffaud_list.append(vt[i].entries[idx-1].audience)
+        timestamp_list.append(vt[i].timestamp.strftime("%x - %X"))
+   
+    return render_template("process_table_detail.html",
+                           title='vmVideoAudience.{0}'.format(idx),
+                           data=zip(timestamp_list, diffaud_list),
+                           graph=gen_graph('bar',
+                                           timestamp_list,
+                                           diffaud_list,
+                                           'Data/Hora (EST)',
+                                           'Audicencia do video'),
+                           ref_table='Audiencia intervalo (views)')
+
 
 if __name__ == "__main__":
     connect("gerente")

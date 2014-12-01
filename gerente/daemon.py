@@ -49,6 +49,13 @@ def get_uptime_scalar():
     obj = UptimeScalar(value=uptime)
     obj.save()
 
+def get_process_count():
+    count = int(m.vmProcessCount)
+    last = ProcessCount.objects.order_by('-id').first()
+    if not last or last.value != count:
+        ProcessCount(value=count).save()
+     
+
 def update_process_count():
     count = int(m.vmProcessCount)
     last = ProcessCount.objects.order_by('-id').first()
@@ -91,15 +98,16 @@ def get_video_table():
 
 if __name__ == '__main__':
     connect('gerente')
-    int i = 0;
+    i = 0
     while(True):
         update_process_count()
 	if i == 20:
             i = 0
         if i == 0:
+            get_process_count()
             get_process_table()
             get_uptime_scalar()
             get_video_table()
-        i++
+        i += 1
         time.sleep(30)
 
